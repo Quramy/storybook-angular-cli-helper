@@ -29,6 +29,10 @@ module.exports = (baseConfig, env) =>
     - [x] Load global css
   - [ ] Assets
 
+## Example
+
+See https://github.com/Quramy/storybook-ng-css .
+
 ## License
 
 MIT. See LICENSE file under this repository.
