@@ -1,0 +1,28 @@
+{
+  "name": "@quramy/storybook-angular-cli-helper",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "watch": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "ts-node src/schema_gen.ts > node_modules/@angular/cli/lib/config/schema.d.ts && npm run append",
+    "append": "echo \"export type CliConfig = _;\" >> node_modules/@angular/cli/lib/config/schema.d.ts"
+  },
+  "keywords": [
+    "storybook",
+    "angular"
+  ],
+  "author": "quramy",
+  "license": "MIT",
+  "devDependencies": {
+    "@angular/cli": "^1.6.3",
+    "@types/node": "6.0.88",
+    "@types/webpack": "^3.8.2",
+    "ts-node": "^4.1.0",
+    "typescript": "~2.4"
+  },
+  "peerDependencies": {
+    "@angular/cli": "^1.0.0"
+  }
+}
