@@ -21,9 +21,10 @@ function getFirstAppConfig() {
 export function applyAngularCliConfig(config: any) {
   const cliConfig = getAngularCliStylesConfig();
 
-  // console.log(cliConfig.entry);
+  // don't use storybooks .css rules because we use .css rules created by @angualr/cli
   const styleRules = config.module.rules.filter((rule: any) => !rule.test || rule.test.toString() !== '/\\.css$/');
 
+  // resolve confilict rules created by @storybook/angular. see https://github.com/storybooks/storybook/pull/2703
   const hit = config.module.rules.find((rule: any) => rule.test && rule.test.toString() === '/\\.(html|css)$/');
   if (hit) {
     hit.test = /\.html$/;
@@ -49,6 +50,8 @@ export function applyAngularCliConfig(config: any) {
 
 export function getAngularCliStylesConfig() {
   const appConfig = getFirstAppConfig();
+
+  // FIXME dummy value
   const config = { 
     projectRoot: "",
     appConfig,
@@ -57,8 +60,8 @@ export function getAngularCliStylesConfig() {
     },
     supportES2015: false,
   } as WebpackConfigOptions;
-  const wc = getStylesConfig(config);
-  return wc;
+
+  return getStylesConfig(config);
 }
 
 export default applyAngularCliConfig;
