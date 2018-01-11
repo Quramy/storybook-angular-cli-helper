@@ -2,7 +2,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { CliConfig } from '@angular/cli/lib/config/schema';
 import { WebpackConfigOptions } from '@angular/cli/models/webpack-config';
-import { getStylesConfig } from '@angular/cli/models/webpack-configs';
+import { getStylesConfig, getCommonConfig } from '@angular/cli/models/webpack-configs';
 
 function readConfigFromJson() {
   const fname = path.join(process.cwd(), '.angular-cli.json');
@@ -19,7 +19,8 @@ function getFirstAppConfig() {
 }
 
 export function applyAngularCliConfig(config: any) {
-  const cliConfig = getAngularCliStylesConfig();
+  const cliCommonConfig = getAngularCliCommonConfig();
+  const cliStyleConfig = getAngularCliStylesConfig();
 
   // don't use storybooks .css rules because we use .css rules created by @angualr/cli
   const styleRules = config.module.rules.filter((rule: any) => !rule.test || rule.test.toString() !== '/\\.css$/');
@@ -32,16 +33,17 @@ export function applyAngularCliConfig(config: any) {
 
   config.entry = {
     ...config.entry,
-    ...cliConfig.entry,
+    ...cliStyleConfig.entry,
   };
 
   config.module.rules = [
-    ...cliConfig.module.rules,
+    ...cliStyleConfig.module.rules,
     ...styleRules,
   ];
 
   config.plugins = [
-    ...cliConfig.plugins,
+    ...cliStyleConfig.plugins,
+    ...cliCommonConfig.plugins.filter((p: any) => !!p.copyWebpackPluginPatterns), // for assets
     ...config.plugins,
   ];
 
@@ -62,6 +64,22 @@ export function getAngularCliStylesConfig() {
   } as WebpackConfigOptions;
 
   return getStylesConfig(config);
+}
+
+export function getAngularCliCommonConfig() {
+  const appConfig = getFirstAppConfig();
+
+  // FIXME dummy value
+  const config = { 
+    projectRoot: "",
+    appConfig,
+    buildOptions: {
+      outputPath: "outputPath",
+    },
+    supportES2015: false,
+  } as WebpackConfigOptions;
+
+  return getCommonConfig(config);
 }
 
 export default applyAngularCliConfig;

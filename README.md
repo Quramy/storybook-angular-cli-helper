@@ -27,7 +27,7 @@ module.exports = (baseConfig, env) =>
     - [x] Load `*.component.css`
     - [x] Load `*.component.scss`
     - [x] Load global css
-  - [ ] Assets
+  - [x] Assets
 
 ## Example
 
