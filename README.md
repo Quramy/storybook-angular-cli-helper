@@ -1,3 +1,7 @@
+**It's deprecated**
+
+This function was merged into the original storybook (see https://github.com/storybooks/storybook/pull/2735). Use `@storybook/angular` >= 3.4.0-alpha.5 :smile:
+
 # Storybook Angular CLI helper
 
 Functions to configure Storybook server which based Angular CLI project.
